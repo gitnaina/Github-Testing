@@ -65,9 +65,7 @@
 
       <div id="container" class="relativeClass">
       <?php
-         /*if($this->showingLandingSlider)
-           $this->load->view('/landing-page-finder/default');*/
-        
+       
         echo $viewContent;
       ?>
       </div>
