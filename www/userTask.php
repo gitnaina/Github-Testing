@@ -24,7 +24,7 @@ class UserTask extends CI_Controller {
         
         switch($chanel){
         	case 'fblogin'   : 	$this->_fblogin();		break;
-			case 'fwlogin'   : 	$this->_fwlogin();		break;
+		case 'fwlogin'   : 	$this->_fwlogin();		break;
         	case 'twlogin'   : 	$this->_twlogin();		break;
         	case 'gpluslogin': 	$this->_gpluslogin();	break;
         	default   		 :  $this->_defaultlogin(); break;
@@ -100,7 +100,7 @@ class UserTask extends CI_Controller {
 			/* Execute cURL, Return Data */
 			$data = curl_exec($ch);
 			
-			echo $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			
 			curl_close($ch);
 			/* 200 Response! */
@@ -133,93 +133,7 @@ class UserTask extends CI_Controller {
 
 	private function _defaultlogin(){
 
-		$this->form_validation->set_rules('username', 'username', 'required|email');
-		$this->form_validation->set_rules('passwd', 'Password', 'required');
-		
-		$return				= 	new	stdClass();
-		$return->status 	= 	false;
-		$return->message  	= 	lang('mess_wrong login');
-
-		if ($this->form_validation->run() == FALSE){
-			echo json_encode($return);			
-		}
-		else{
-				
-			$this->_username	=	$this->input->post('username');
-			$this->_password	=	$this->input->post('passwd');
-			$rememberMe			=	$this->input->post('rememberMe');
-
-				$this->load->helper('cookie'); 
-						if ($rememberMe=='set') { 
-							$cookie = array(
-		                    'name'   => 'username',
-		                    'value'  => $this->_username,
-		                    'expire' =>  86500,
-		                    'secure' => false
-				            );
-			                $this->input->set_cookie($cookie); 
-
-			                $cookie = array(
-				                    'name'   => 'passwd',
-				                    'value'  => $this->_password,
-				                    'expire' =>  86500,
-				                    'secure' => false
-				            );
-			                $this->input->set_cookie($cookie); 
-
-			                 $cookie = array(
-				                    'name'   => 'rememberMe',
-				                    'value'  =>'set',
-				                    'expire' =>  86500,
-				                    'secure' => false
-				            );
-			                $this->input->set_cookie($cookie); 
-							} else {
-									$cookie = array(
-				                    'name'   => 'username',
-				                    'value'  => '',
-				                    'expire' =>  86500,
-				                    'secure' => false
-				            );
-			                $this->input->set_cookie($cookie); 
-
-			                $cookie = array(
-				                    'name'   => 'passwd',
-				                    'value'  => '',
-				                    'expire' =>  86500,
-				                    'secure' => false
-				            );
-			                $this->input->set_cookie($cookie); 
-
-			                 $cookie = array(
-				                    'name'   => 'rememberMe',
-				                    'value'  =>'',
-				                    'expire' =>  86500,
-				                    'secure' => false
-				            );
-			                $this->input->set_cookie($cookie); 
-						}
-
-    		$credentails	=	array('username'=>$this->_username,'password'=>$this->_password);
-			$result			=	$this->model_user->login($credentails);
-			
-			if($result->status)	{
-
-				$this->_saveUserSession($result);
-				
-				$taskInHold=$this->session->userdata('taskInHold');
-				if($taskInHold){
-				
-					$taskName=$this->session->userdata('taskName');
-					$taskData=$this->session->userdata('taskData');
-					$result=$this->tablegrabber->finishTaskInHold($taskName, $taskData);
-					
-				}
-				
-			}
-
-			echo json_encode($result);
-		}
+	
 		
 	}
 
