@@ -192,8 +192,6 @@ class Model_user extends CI_Model
 	
 	}
 	
-	
-   
 
 
 	private function _insertUserLoginStats($userId){
